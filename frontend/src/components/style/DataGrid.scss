@@ -1,0 +1,35 @@
+.DataGrid {
+  padding: 50px;
+  margin: auto;
+  &__table {
+    width: 100%;
+    margin: auto;
+
+    td,
+    th {
+      width: 6em;
+      padding: 0.5em;
+      text-align: center;
+    }
+    thead {
+      tr {
+        background: lightcoral;
+      }
+      th {
+        cursor: pointer;
+      }
+    }
+
+    tbody tr {
+      &:nth-child(2n + 1) {
+        background: lightblue;
+      }
+      &:nth-child(2n) {
+        background: lightcyan;
+      }
+      &:hover {
+        background-color: lightgray;
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+@function color($color) {
+  @return map-get($map: $colors, $key: $color);
+}
+$colors: (
+  text: #000,
+);
+$desktop: 600px;
+@mixin desktop {
+  @media screen and (min-width: #{$desktop}) {
+    @content;
+  }
+}
+@mixin orientation {
+  @media (orientation: landscape) {
+    @content;
+  }
+}

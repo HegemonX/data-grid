@@ -1,0 +1,20 @@
+.Fetching {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+
+  $spinner: 8vmax;
+  &__spinner {
+    position: absolute;
+    width: $spinner;
+    height: $spinner;
+    // padding: 0.5em;
+    top: calc(50% - (#{$spinner} / 2));
+    left: calc(50% - (#{$spinner} / 2));
+    background: url(../static/icon/spinner.svg);
+    background-size: contain;
+  }
+}
