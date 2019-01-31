@@ -20,12 +20,11 @@ export const getRequest = async url => {
   return handleOK(response);
 };
 export const postRequest = async (url, data) => {
-  console.log(data);
-  const response = await proxyRequest.post(url, { ...data });
+  const response = await proxyRequest.post(url, data);
   return handleOK(response);
 };
 export const putRequest = async (url, data) => {
-  const response = await proxyRequest.put(url, { data });
+  const response = await proxyRequest.put(url, data);
   return handleOK(response);
 };
 export const deleteRequest = async url => {

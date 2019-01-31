@@ -1,4 +1,7 @@
 import * as req from "../api/requests";
+import * as fromProcess from "./helpers/process";
+import { normalize } from "normalizr";
+import * as schema from "./helpers/schema";
 
 export const fetchData = () => async dispatch => {
   await dispatch(fetchFields());
@@ -13,7 +16,7 @@ export const fetchGrid = () => async (dispatch, getState) => {
     const response = await req.grid();
     dispatch({
       type: "FETCH_GRID_SUCCESS",
-      response
+      response: fromProcess.processPeopleToState(response)
     });
   } catch (error) {
     dispatch({
@@ -43,25 +46,105 @@ export const fetchFields = () => async (dispatch, getState) => {
 
 export const postPerson = data => async dispatch => {
   try {
+    const parsedData = fromProcess.processPersonToServer(data);
     dispatch({
       type: "POST_PERSON_REQUEST",
-      data
+      data,
+      parsedData
     });
-    const response = await req.addPerson(data);
+    const rawResponse = await req.addPerson(parsedData);
+    const response = fromProcess.processPersonToState(rawResponse);
     dispatch({
       type: "POST_PERSON_SUCCESS",
-      response
+      response,
+      rawResponse
     });
     return response;
   } catch (error) {
     dispatch({
       type: "POST_PERSON_ERROR",
+      error,
+      data
+    });
+    return error;
+  }
+};
+
+export const deletePerson = id => async dispatch => {
+  try {
+    dispatch({
+      type: "DELETE_PERSON_REQUEST",
+      id
+    });
+    const response = await req.deletePerson(id);
+    dispatch({
+      type: "DELETE_PERSON_SUCCESS",
+      id
+    });
+    return response;
+  } catch (error) {
+    dispatch({
+      type: "DELETE_PERSON_ERROR",
+      error,
+      id
+    });
+  }
+};
+
+export const putPerson = (id, data) => async dispatch => {
+  try {
+    const parsedData = fromProcess.processPersonToServer(data);
+    dispatch({
+      type: "PUT_PERSON_REQUEST",
+      id,
+      parsedData,
+      data
+    });
+    const rawResponse = await req.putPerson(id, parsedData);
+    const response = fromProcess.processPersonToState(rawResponse);
+    dispatch({
+      type: "PUT_PERSON_SUCCESS",
+      response,
+      id
+    });
+    return response;
+  } catch (error) {
+    dispatch({
+      type: "DELETE_PERSON_ERROR",
+      id,
+      data,
       error
     });
   }
 };
 
-export const sortList = newList => ({
-  type: "SORT_LIST",
-  response: newList
+export const sortList = sortBy => ({
+  type: "SORT_GRID",
+  sortBy
+});
+
+export const resetFilters = () => ({
+  type: "RESET_ALL_FILTERS"
+});
+
+export const setJobFilter = value => ({
+  type: "SET_JOB_FILTER",
+  value
+});
+export const setStatusFilter = value => ({
+  type: "SET_STATUS_FILTER",
+  value
+});
+export const setQueryFilter = value => ({
+  type: "SET_QUERY_FILTER",
+  value
+});
+
+export const openModal = (personId, type) => ({
+  type: "OPEN_MODAL",
+  personId,
+  type
+});
+export const closeModal = () => ({
+  type: "CLOSE_MODAL"
 });

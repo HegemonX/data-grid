@@ -1,27 +1,28 @@
 import React from "react";
 import "./style/DataGrid.scss";
 import PersonC from "../containers/PersonC";
-import GridHeadC from "../containers/GridHeadC";
-import DataGridOptionsC from "../containers/DataGridOptionsC";
+import GridTheadC from "../containers/GridTheadC";
+import NoDataC from "../containers/NoDataC";
+import DataGridOptions from "./DataGridOptions";
 
-function DataGrid({ people, selectFields }) {
+function DataGrid({ people, onTableClick }) {
   return (
     <div className="DataGrid">
-      <table className="DataGrid__table">
+      <DataGridOptions />
+      <table className="DataGrid__table" onClick={onTableClick}>
         <thead>
-          <GridHeadC selectFields={selectFields} />
+          <GridTheadC />
         </thead>
         <tbody>
-          {people.map(personRaw => (
-            <PersonC
-              key={personRaw.id}
-              personRaw={personRaw}
-              selectFields={selectFields}
-            />
-          ))}
+          {people.length > 0 ? (
+            people.map(personRaw => (
+              <PersonC key={personRaw.id} personRaw={personRaw} />
+            ))
+          ) : (
+            <NoDataC />
+          )}
         </tbody>
       </table>
-      <DataGridOptionsC />
     </div>
   );
 }

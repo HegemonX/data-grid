@@ -1,18 +1,17 @@
 import React from "react";
+import ButtonDeleteC from "../containers/ButtonDeleteC";
+import ButtonEditC from "../containers/ButtonEditC";
+import * as fromShow from "./helpers/show";
 
-function Person({ name, joinedJob, salary, age, ...selectedFields }) {
+function Person({ fields, id }) {
   return (
     <tr>
-      <td>{name}</td>
-      {Object.keys(selectedFields).map(field => (
-        <td key={field}>{selectedFields[field]}</td>
-      ))}
-      <td>{salary}</td>
-      <td>{age}</td>
-      <td>{joinedJob}</td>
+      {Object.keys(fromShow.fields).map(field => {
+        return <td key={field}>{fields[field]}</td>;
+      })}
       <td>
-        <button className="DataGrid__action">Delete</button>
-        <button className="DataGrid__action">Edit</button>
+        <ButtonDeleteC personId={id} />
+        <ButtonEditC personId={id} />
       </td>
     </tr>
   );

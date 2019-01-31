@@ -2,27 +2,23 @@ import React, { Component } from "react";
 import ModalAddC from "./ModalAddC";
 
 export default class ButtonAddC extends Component {
-  state = {
-    modalShowed: false
+  state = { modalShowed: false };
+  openModal = e => {
+    this.setState({ modalShowed: true });
   };
-  open = e => {
-    this.setState({
-      modalShowed: true
-    });
-  };
-  close = e => {
-    this.setState({
-      modalShowed: false
-    });
+  closeModal = e => {
+    this.setState({ modalShowed: false });
   };
   render() {
     return (
-      <React.Fragment>
-        <button className="DataGrid__action" onClick={this.open}>
+      <div className="ButtonBlock">
+        <button className="ButtonAdd" onClick={this.openModal}>
           Add
         </button>
-        {this.state.modalShowed ? <ModalAddC closeModal={this.close} /> : null}
-      </React.Fragment>
+        {this.state.modalShowed ? (
+          <ModalAddC onModalClose={this.closeModal} />
+        ) : null}
+      </div>
     );
   }
 }

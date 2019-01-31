@@ -15,3 +15,11 @@ export const status = () => {
 export const addPerson = data => {
   return req.postRequest("/grid/", data);
 };
+
+export const deletePerson = id => {
+  return req.deleteRequest(`/grid/${id}/`);
+};
+
+export const putPerson = (id, data) => {
+  return req.putRequest(`/grid/${id}/`, data);
+};

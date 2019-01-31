@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { putPerson } from "../actions";
+import { getPersonById } from "../reducers";
 import Modal from "../components/Modal";
 import Form from "../components/Form";
-import { postPerson } from "../actions";
 import * as fromForm from "./helpers/form";
 
-export class ModalAddC extends Component {
-  state = {
-    response: null
-  };
-  static propTypes = {};
-  onSubmit = async e => {
+export class ModalEditC extends Component {
+  state = { response: null };
+  handleSubmit = async e => {
     e.preventDefault();
     const data = fromForm.parse(this.form);
     if (!data) {
@@ -20,10 +18,13 @@ export class ModalAddC extends Component {
       });
       return;
     }
-    const { postPerson, onModalClose } = this.props;
-    const response = await postPerson(data);
+    const { putPerson, onModalClose, personId } = this.props;
+    const response = await putPerson(personId, data);
     onModalClose();
   };
+  componentDidMount() {
+    fromForm.fill(this.form, this.props.person);
+  }
   render() {
     const { onModalClose } = this.props;
     return (
@@ -38,13 +39,15 @@ export class ModalAddC extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state, ownProps) => ({
+  person: getPersonById(state, ownProps.personId)
+});
 
 const mapDispatchToProps = {
-  postPerson
+  putPerson
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ModalAddC);
+)(ModalEditC);

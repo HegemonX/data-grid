@@ -1,42 +1,26 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import DataGrid from "../components/DataGrid";
-import Fetching from "../components/Fetching";
+import DataGridC from "./DataGridC";
 import { connect } from "react-redux";
-import { fetchData } from "../actions";
-import { getPeople, getIsFetching, getFields, getSorted } from "../reducers";
+import { getIsFetching } from "../reducers";
+import Fetching from "../components/Fetching";
 
 export class ContentC extends Component {
-  static propTypes = {
-    people: PropTypes.array,
-    fields: PropTypes.object
-  };
-  componentDidMount() {
-    const { fetchData } = this.props;
-    fetchData();
-  }
-
   render() {
-    const { isFetching, people, fields, sorted } = this.props;
-    const toRender = sorted ? sorted : people;
-    return isFetching || !toRender.length ? (
-      <Fetching />
-    ) : (
-      <DataGrid people={toRender} selectFields={fields} />
+    const { isFetching } = this.props;
+    return (
+      <React.Fragment>
+        <DataGridC />
+        {isFetching ? <Fetching /> : null}
+      </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  people: getPeople(state),
-  sorted: getSorted(state),
-  fields: getFields(state),
   isFetching: getIsFetching(state)
 });
 
-const mapDispatchToProps = {
-  fetchData
-};
+const mapDispatchToProps = {};
 
 export default connect(
   mapStateToProps,
